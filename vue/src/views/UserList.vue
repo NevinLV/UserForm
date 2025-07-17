@@ -7,6 +7,7 @@ const userTableRef = ref<typeof UserTable| null>(null);
 function addNewUser(): void {
   if (userTableRef.value !== null) userTableRef.value.addTempUser();
 }
+
 </script>
 
 <template>

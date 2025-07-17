@@ -8,8 +8,15 @@ import type {User} from "../types/user.ts";
 import type {PropType} from "vue";
 
 const props = defineProps({
-  user: { type: Object as PropType<User>, required: true}
+  user: { type: Object as PropType<User>, required: true},
+  index: { type: Number, required: true}
 })
+
+const emit = defineEmits<{
+  /** Удалить пользователя **/
+  deleteUser: [index: number];
+
+}>();
 
 </script>
 
@@ -29,10 +36,8 @@ const props = defineProps({
     </div>
 
     <div class="col-1">
-      <button class="btn btn-outline-secondary">X</button>
+      <button class="btn btn-outline-secondary" @click="emit('deleteUser', props.index);">X</button>
     </div>
-
-
 
   </div>
 </template>

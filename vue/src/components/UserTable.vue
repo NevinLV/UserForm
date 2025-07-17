@@ -19,6 +19,10 @@ defineExpose({
   },
 });
 
+function UserDeleteHandler(index: number): void {
+  userStore.deleteUser(index)
+}
+
 </script>
 
 <template>
@@ -39,6 +43,10 @@ defineExpose({
     </div>
   </div>
 
-  <UserData v-for="user in users" :user="user"/>
+  <UserData
+      v-for="(user, index) in users"
+      :user="user"
+      :index="index"
+      @delete-user="UserDeleteHandler"/>
 
 </template>
