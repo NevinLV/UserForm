@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import UserList from "./views/UserList.vue";
 
 </script>
 
 <template>
-  <UserList/>
+<input class="form-control" maxlength="100">
 </template>
-
