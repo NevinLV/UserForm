@@ -1,5 +1,23 @@
 <script setup lang="ts">
 import UserData from "./UserData.vue";
+import type {User} from "../types/user.ts";
+import {useUserStore} from "../stores/userStore.ts";
+import {ref} from "vue";
+
+const userStore = useUserStore();
+const users = ref<User[]>(userStore.users);
+
+defineExpose({
+  /** Добавить временную запись о пользователе */
+  addTempUser(): void {
+    users.value.push({
+      labels: [],
+      type: 'local',
+      login: '',
+      password: undefined
+    })
+  },
+});
 
 </script>
 
@@ -17,8 +35,10 @@ import UserData from "./UserData.vue";
     <div class="col">
       Пароль
     </div>
+    <div class="col-1">
+    </div>
   </div>
 
-  <UserData/>
+  <UserData v-for="user in users" :user="user"/>
 
 </template>

@@ -1,5 +1,12 @@
 <script setup lang="ts">
 import UserTable from "../components/UserTable.vue";
+import {ref} from "vue";
+const userTableRef = ref<typeof UserTable| null>(null);
+
+/** Добавить новую запись о пользователе */
+function addNewUser(): void {
+  if (userTableRef.value !== null) userTableRef.value.addTempUser();
+}
 </script>
 
 <template>
@@ -9,7 +16,7 @@ import UserTable from "../components/UserTable.vue";
         <h1>Учётные записи</h1>
       </div>
       <div class="col">
-        <button class="btn btn-outline-secondary">
+        <button class="btn btn-outline-secondary" @click="addNewUser">
           +
         </button>
       </div>
@@ -18,7 +25,7 @@ import UserTable from "../components/UserTable.vue";
       Для указания нескольких меток для одной пары логин/пароль используйте разделитель ;
     </div>
 
-    <UserTable/>
+    <UserTable ref="userTableRef"/>
 
   </div>
 </template>

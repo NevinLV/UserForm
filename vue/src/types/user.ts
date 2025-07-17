@@ -1,4 +1,4 @@
-export type User = {
+ export type User = {
     labels: { text: string }[];
     type: 'local' | 'LDAP';
     login: string;
