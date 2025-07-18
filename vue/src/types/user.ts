@@ -2,5 +2,5 @@
     labels: { text: string }[];
     type: 'local' | 'LDAP';
     login: string;
-    password?: string;
+    password: string | null;
 }

@@ -5,22 +5,40 @@ import {useUserStore} from "../stores/userStore.ts";
 import {ref} from "vue";
 
 const userStore = useUserStore();
-const users = ref<User[]>(userStore.users);
+const usersList = ref<Array<User & {status?: "new"}>>([...userStore.users]);
 
 defineExpose({
   /** Добавить временную запись о пользователе */
   addTempUser(): void {
-    users.value.push({
+    usersList.value.push({
       labels: [],
       type: 'local',
       login: '',
-      password: undefined
+      password: null,
+      status: "new",
     })
   },
 });
 
+function updateUserList() {
+  console.log(userStore.users)
+  usersList.value = []
+  usersList.value = userStore.users
+}
+
 function UserDeleteHandler(index: number): void {
   userStore.deleteUser(index)
+  updateUserList()
+}
+
+function UserAddHandler(user: User): void {
+  userStore.addUser(user)
+  updateUserList()
+}
+
+function UserUpdateHandler(index: number, user: User): void {
+  userStore.updateUser(index, user)
+  updateUserList()
 }
 
 </script>
@@ -44,9 +62,13 @@ function UserDeleteHandler(index: number): void {
   </div>
 
   <UserData
-      v-for="(user, index) in users"
+      v-for="(user, index) in usersList"
       :user="user"
       :index="index"
-      @delete-user="UserDeleteHandler"/>
+      :status="user.status"
+      @delete-user="UserDeleteHandler"
+      @add-user="UserAddHandler"
+      @update-user="UserUpdateHandler"
+  />
 
 </template>
