@@ -3,7 +3,7 @@ import type {User} from "../types/user.ts";
 import {type PropType, ref} from "vue";
 
 const props = defineProps({
-  user: { type: Object as PropType<User & {status?: string}>, required: true},
+  user: { type: Object as PropType<User & {temp?: boolean}>, required: true},
   index: { type: Number, required: true},
 })
 
@@ -71,8 +71,8 @@ function checkUserForm(){
  * Отправка формы
  */
 function sendForm(){
-  if (props.user.status !== undefined){
-    delete props.user.status;
+  if (props.user.temp !== undefined){
+    delete props.user.temp;
     emit('addUser', props.user);
   }
   else
