@@ -53,7 +53,7 @@ function UserUpdateHandler(index: number, user: User): void {
 </script>
 
 <template>
-  <div class="row mt-5">
+  <div class="row mt-4 labels">
     <div class="col">
       Метки
     </div>

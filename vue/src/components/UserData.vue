@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import DeleteIcon from "./icons/DeleteIcon.vue";
 import type {User} from "../types/user.ts";
 import {type PropType, ref} from "vue";
 
@@ -92,7 +93,7 @@ function sendForm(){
   tempUser.value.labels = stringToLabels(tempLabels.value)
 
   if (props.user.temp !== undefined){
-    delete props.user.temp;
+    delete tempUser.value.temp;
     emit('addUser', tempUser.value);
   }
   else
@@ -151,7 +152,9 @@ function sendForm(){
     </div>
 
     <div class="col-1">
-      <button class="btn btn-outline-secondary" @click="emit('deleteUser', props.index);">X</button>
+      <button class="btn btn-outline-danger" @click="emit('deleteUser', props.index);">
+        <DeleteIcon/>
+      </button>
     </div>
 
   </div>

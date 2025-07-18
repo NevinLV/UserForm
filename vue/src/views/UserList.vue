@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import UserTable from "../components/UserTable.vue";
+import AddIcon from "../components/icons/AddIcon.vue";
+import HelpIcon from "../components/icons/HelpIcon.vue";
 import {ref} from "vue";
 const userTableRef = ref<typeof UserTable| null>(null);
 
@@ -17,12 +19,13 @@ function addNewUser(): void {
         <h1>Учётные записи</h1>
       </div>
       <div class="col">
-        <button class="btn btn-outline-secondary" @click="addNewUser">
-          +
+        <button class="btn btn-outline-secondary add-btn" @click="addNewUser">
+          <AddIcon/>
         </button>
       </div>
     </div>
     <div class="help">
+      <HelpIcon/>
       Для указания нескольких меток для одной пары логин/пароль используйте разделитель ;
     </div>
 
