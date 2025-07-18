@@ -6,8 +6,21 @@ const props = defineProps({
   user: { type: Object as PropType<User & {temp?: boolean}>, required: true},
   index: { type: Number, required: true},
 })
+const labelsToString = (labels: { text: string }[] | undefined): string => {
+  if (!labels || !Array.isArray(labels)) return '';
+  return labels.map(label => label.text).filter(Boolean).join('; ');
+};
+
+const stringToLabels = (str: string): { text: string }[] => {
+  return str.split(';')
+      .map(item => item.trim())
+      .filter(item => item.length > 0)
+      .map(text => ({ text }));
+};
+
 
 const tempUser = ref<User & {temp?: boolean}>({...props.user});
+const tempLabels = ref<string>(labelsToString(tempUser.value.labels));
 
 const login_not_valid = ref<boolean>(false);
 const password_not_valid = ref<boolean>(false);
@@ -25,7 +38,9 @@ const emit = defineEmits<{
   updateUser: [index: number, user: User];
 }>();
 
+
 let blurTimeout: number | null = null;
+
 
 /**
  * Отслеживание снятие фокуса
@@ -74,6 +89,8 @@ function checkUserForm(){
  * Отправка формы
  */
 function sendForm(){
+  tempUser.value.labels = stringToLabels(tempLabels.value)
+
   if (props.user.temp !== undefined){
     delete props.user.temp;
     emit('addUser', tempUser.value);
@@ -87,7 +104,7 @@ function sendForm(){
 <template>
   <div class="row my-3">
     <div class="col">
-      <input v-model="tempUser.labels"
+      <input v-model="tempLabels"
              class="form-control"
              maxlength="50"
              @focus="is_focused = true"
