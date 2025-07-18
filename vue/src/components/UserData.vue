@@ -7,6 +7,8 @@ const props = defineProps({
   index: { type: Number, required: true},
 })
 
+const tempUser = ref<User & {temp?: boolean}>({...props.user});
+
 const login_not_valid = ref<boolean>(false);
 const password_not_valid = ref<boolean>(false);
 
@@ -51,14 +53,15 @@ function blurHandler(): void {
 function checkUserForm(){
   let is_correct = true;
 
-  if (props.user?.login.length === 0){
+  if (tempUser.value?.login.length === 0){
     login_not_valid.value = true;
     is_correct = false;
   }
 
+
   if (
-      props.user?.type !== 'local' &&
-      props.user?.password?.length === 0
+      tempUser.value?.type !== 'local' && tempUser.value?.password === null ||
+      tempUser.value?.password !== null && tempUser.value.password.length === 0
   ) {
     password_not_valid.value = true;
     is_correct = false;
@@ -73,10 +76,10 @@ function checkUserForm(){
 function sendForm(){
   if (props.user.temp !== undefined){
     delete props.user.temp;
-    emit('addUser', props.user);
+    emit('addUser', tempUser.value);
   }
   else
-    emit('updateUser', props.index, props.user)
+    emit('updateUser', props.index, tempUser.value)
 }
 
 </script>
@@ -84,7 +87,7 @@ function sendForm(){
 <template>
   <div class="row my-3">
     <div class="col">
-      <input v-model="props.user.labels"
+      <input v-model="tempUser.labels"
              class="form-control"
              maxlength="50"
              @focus="is_focused = true"
@@ -93,10 +96,11 @@ function sendForm(){
     </div>
 
     <div class="col">
-      <select v-model="props.user.type"
+      <select v-model="tempUser.type"
               class="form-select"
               @focus="is_focused = true"
-              @blur="blurHandler">
+              @blur="blurHandler"
+              @change="password_not_valid = false">
         <option value="local">
           local
         </option>
@@ -107,21 +111,23 @@ function sendForm(){
     </div>
 
     <div class="col">
-      <input v-model="props.user.login"
+      <input v-model="tempUser.login"
              class="form-control"
              :class="{'is-invalid': login_not_valid}"
              maxlength="100"
+             @input="login_not_valid = false"
              @focus="is_focused = true"
              @blur="blurHandler">
     </div>
 
     <div class="col">
-      <input v-model="props.user.password"
-             :disabled="props.user.type === 'local'"
+      <input v-model="tempUser.password"
+             :disabled="tempUser.type === 'local'"
              class="form-control"
              :class="{'is-invalid': password_not_valid}"
              type="password"
              maxlength="100"
+             @input="password_not_valid = false"
              @focus="is_focused = true"
              @blur="blurHandler"
       >
