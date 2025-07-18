@@ -7,11 +7,20 @@ const props = defineProps({
   user: { type: Object as PropType<User & {temp?: boolean}>, required: true},
   index: { type: Number, required: true},
 })
+
+/**
+ * Преобразование меток в строку
+ * @param labels
+ */
 const labelsToString = (labels: { text: string }[] | undefined): string => {
   if (!labels || !Array.isArray(labels)) return '';
   return labels.map(label => label.text).filter(Boolean).join('; ');
 };
 
+/**
+ * Преобразование строки с метками в массив объектов
+ * @param str
+ */
 const stringToLabels = (str: string): { text: string }[] => {
   return str.split(';')
       .map(item => item.trim())
